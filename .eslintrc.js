@@ -10,6 +10,18 @@ module.exports = {
     sourceType: 'module',
   },
   plugins: ['@typescript-eslint'],
+  settings: {
+    //解决路径引用ts文件报错的问题
+    'import/resolver': {
+      node: {
+        extensions: ['.js', '.jsx', '.ts', '.tsx'],
+      },
+      // 解决tsconfig下的path别名导致eslint插件无法解决的bug
+      typescript: {
+        alwaysTryTypes: true,
+      },
+    },
+  },
   rules: {
     semi: ['error', 'always'],
     quotes: ['error', 'double'],

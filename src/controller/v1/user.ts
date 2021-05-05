@@ -9,16 +9,11 @@ import {
   orderAll,
   Context,
 } from 'koa-swagger-decorator';
-import { validate, ValidationError } from 'class-validator';
-import { User, userSchema } from "../../validator/user";
-
+import { User, userSchema } from '../../validator/user';
+import validate from '@validate/index';
+import createSuccessModel from '@model/http-success';
 
 const tag = tags(['User']);
-
-// const userSchema = {
-//   name: { type: 'string', required: true },
-//   password: { type: 'string', required: true },
-// };
 
 const logTime = () => async (ctx: Context, next: () => Promise<void>) => {
   console.log(`start: ${new Date()}`);
@@ -54,11 +49,11 @@ export default class UserRouter {
   @summary('user list')
   @tag
   static async getAll(ctx: Context) {
-    const validateUser = new User()
-    const errors: ValidationError[] = await validate(validateUser);
-    console.log(errors,'errors')
+    // const validateUser = new User();
+    // await validate(validateUser);
     const users = [{ name: 'foo' }, { name: 'bar' }];
-    ctx.body = { users };
+    const responseData = createSuccessModel(users);
+    ctx.body = responseData;
   }
 
   @request('get', '/user/{id}')
